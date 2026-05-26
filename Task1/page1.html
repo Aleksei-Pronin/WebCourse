@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Страница 1</title>
+</head>
+<body>
+<h1>Форма регистрации</h1>
+
+<form action="/test" method="post">
+    <label>
+        Введите имя:
+        <input type="text" placeholder="Имя" name="name">
+    </label>
+    <br><br>
+
+    <label>
+        Введите фамилию:
+        <input type="text" placeholder="Фамилия" name="surname">
+    </label>
+    <br><br>
+
+    <label>
+        Введите email:
+        <input type="email" placeholder="email" name="email">
+    </label>
+    <br><br>
+
+    <label>
+        Введите пароль:
+        <input type="password" placeholder="пароль" name="password">
+    </label>
+    <br>
+
+    <p> Выберите пол:<br>
+        <label> <input type="radio" name="gender" value="m"> Мужской</label><br>
+        <label> <input type="radio" name="gender" value="f"> Женский</label><br>
+    </p>
+
+    <label>
+        Выберите город: <br>
+        <select name="city">
+            <option>Москва</option>
+            <option>Новосибирск</option>
+            <option>Санкт-Петербург</option>
+            <option>Казань</option>
+            <option>Екатеринбург</option>
+        </select>
+    </label>
+
+    <p> Ваши интересы:<br>
+        <label> <input type="checkbox" name="music"> Музыка</label><br>
+        <label> <input type="checkbox" name="sport"> Спорт</label><br>
+        <label> <input type="checkbox" name="games"> Игры</label><br>
+    </p>
+
+    <label>
+        Любимые языки программирования:<br>
+        <select name="languages" multiple>
+            <option>Python</option>
+            <option>Java</option>
+            <option>C#</option>
+            <option>JavaScript</option>
+        </select>
+    </label>
+    <br><br>
+
+    <label>
+        О себе:<br>
+        <textarea name="about" rows="5" cols="50"></textarea>
+    </label>
+    <br><br>
+
+    <button type="submit">Отправить</button>
+</form>
+
+<hr><br>
+<a href="page2.html">Перейти на страницу 2</a>
+</body>
+</html>
