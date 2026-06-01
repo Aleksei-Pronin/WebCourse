@@ -1,0 +1,47 @@
+body {
+    color: #676565;
+    background-color: #FFFFFF;
+    min-height: 100%;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.43;
+    margin: 0;
+    padding: 0;
+}
+
+.course-page {
+    background-color: #FEEED6;
+    width: 747px;
+    height: 426px;
+    padding: 10px 15px;
+    box-sizing: border-box;
+}
+
+.course-title {
+    margin: 0 0 12px;
+    font-size: 2em;
+    line-height: 1.1;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.course-subtitle {
+    margin-bottom: 0.3em;
+    font-size: 1.2em;
+}
+
+.text-blue {
+    color: #378DB2;
+    font-weight: bold;
+}
+
+.price-without-discount {
+    text-decoration: line-through;
+}
+
+p {
+    margin: 0 0 10px;
+    font-size: 1.1em;
+    text-align: justify;
+    text-indent: 1em;
+}
