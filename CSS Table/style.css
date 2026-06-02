@@ -1,0 +1,36 @@
+body {
+    background: #FFFFFF;
+    font-family: Segoe UI, Arial, sans-serif;
+    padding: 10px 10px;
+}
+
+.css-table {
+    width: 860px;
+    height: 312px;
+    box-sizing: border-box;
+    border-collapse: collapse;
+    font-size: 20px;
+}
+
+.css-table th {
+    background-color: #3598DB;
+    color: #FFFFFF;
+    padding: 14px 12px;
+    border: 1px solid #DADADA;
+    font-weight: 500;
+    text-align: left;
+}
+
+.css-table td {
+    color: #000000;
+    padding: 8px 12px;
+    border: 1px solid #DADADA;
+}
+
+.css-table .row-white {
+    background-color: #FFFFFF;
+}
+
+.css-table .row-gray {
+    background-color: #EEEEEE;
+}
