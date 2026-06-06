@@ -1,6 +1,6 @@
 body {
     color: #676565;
-    background-color: #FFFFFF;
+    background-color: #FFF;
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.43;
@@ -8,7 +8,8 @@ body {
 
 .course-page {
     background-color: #FEEED6;
-    width: 747px;
+    width: 100%;
+    max-width: 747px;
     height: 426px;
     padding: 10px 15px;
     box-sizing: border-box;
@@ -36,7 +37,7 @@ body {
     text-decoration: line-through;
 }
 
-p {
+.course-text {
     margin: 0 0 10px;
     font-size: 1.1em;
     text-align: justify;
