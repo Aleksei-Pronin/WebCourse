@@ -3,29 +3,28 @@ body {
     background-color: #FFF;
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     font-size: 14px;
-    line-height: 1.43;
+    line-height: 22px;
 }
 
 .course-page {
     background-color: #FEEED6;
     width: 100%;
     max-width: 747px;
-    height: 426px;
     padding: 10px 15px;
     box-sizing: border-box;
 }
 
 .course-title {
-    margin: 0 0 12px;
-    font-size: 2em;
-    line-height: 1.1;
+    margin-bottom: 13px;
+    font-size: 28px;
+    line-height: 31px;
     font-weight: normal;
     text-transform: uppercase;
 }
 
 .course-subtitle {
-    margin-bottom: 0.3em;
-    font-size: 1.2em;
+    margin-top: 7px;
+    font-size: 17px;
 }
 
 .text-blue {
@@ -38,8 +37,8 @@ body {
 }
 
 .course-text {
-    margin: 0 0 10px;
-    font-size: 1.1em;
+    margin-top: 8px;
+    font-size: 15px;
     text-align: justify;
     text-indent: 1em;
 }
