@@ -13,7 +13,6 @@ body {
     padding-top: 23px;
     width: 100%;
     max-width: 742px;
-    height:520px;
 }
 
 .beige-color {
@@ -53,7 +52,6 @@ body {
     border: none;
     font-family: inherit;
     font-size: inherit;
-    box-sizing: border-box;
 }
 
 .field-input::placeholder {
