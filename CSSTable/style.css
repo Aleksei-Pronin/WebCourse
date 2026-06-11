@@ -4,13 +4,12 @@ body {
 }
 
 .container{
-    width: 100%;
-    max-width: 860px;
     padding: 10px;
 }
 
 .table {
     width: 100%;
+    max-width: 860px;
     font-size: 21px;
 }
 
