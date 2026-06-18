@@ -14,39 +14,37 @@
         </div>
     </div>
 
-    <form action="/submit" method="POST">
-        <div class="beige-color">
-            <div class="container">
-                <div class="form-field">
-                    <label for="form_clientName">Ваше имя</label>
-                    <input type="text" id="form_clientName" class="input-field" placeholder="Ваше имя *"
-                           name="clientName" required>
-                </div>
-
-                <div class="form-field">
-                    <label for="form_clientPhone">Ваш номер телефона</label>
-                    <input type="tel" id="form_clientPhone" class="input-field" placeholder="Ваш номер телефона *"
-                           name="clientPhone" required>
-                </div>
-
-                <div class="form-field">
-                    <label for="form_clientEmail">Ваш email или VK</label>
-                    <input type="text" id="form_clientEmail" class="input-field" placeholder="Ваш email или VK *"
-                           name="clientEmail" required>
-                </div>
-
-                <div class="form-field">
-                    <label for="form_clientComment">Комментарий</label>
-                    <textarea class="input-field" id="form_clientComment" rows="5"
-                              placeholder="Комментарий (не обязательно)" name="clientComment"></textarea>
-                </div>
-
-                <div class="callback-field">
-                    Заполните и отправьте форму, и мы перезвоним Вам по указанному номеру
-                </div>
-
-                <button type="submit" class="submit-button">Отправить заявку</button>
+    <form class="beige-color" action="/submit" method="POST">
+        <div class="container">
+            <div class="form-field">
+                <label for="client-name">Ваше имя</label>
+                <input type="text" id="client-name" class="input-field" placeholder="Ваше имя *"
+                       name="clientName" required>
             </div>
+
+            <div class="form-field">
+                <label for="client-phone">Ваш номер телефона</label>
+                <input type="tel" id="client-phone" class="input-field" placeholder="Ваш номер телефона *"
+                       name="clientPhone" required>
+            </div>
+
+            <div class="form-field">
+                <label for="client-email">Ваш email или VK</label>
+                <input type="text" id="client-email" class="input-field" placeholder="Ваш email или VK *"
+                       name="clientEmail" required>
+            </div>
+
+            <div class="form-field">
+                <label for="client-comment">Комментарий</label>
+                <textarea class="input-field" id="client-comment" rows="5"
+                          placeholder="Комментарий (не обязательно)" name="clientComment"></textarea>
+            </div>
+
+            <div class="callback-field">
+                Заполните и отправьте форму, и мы перезвоним Вам по указанному номеру
+            </div>
+
+            <button type="submit" class="submit-button">Отправить заявку</button>
         </div>
     </form>
 </div>

@@ -54,7 +54,7 @@ body {
 }
 
 .input-field::placeholder {
-    opacity: 0.7;
+    color: #ACA7A7;
 }
 
 textarea.input-field {
