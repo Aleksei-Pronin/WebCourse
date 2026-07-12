@@ -1,11 +1,23 @@
-(() => {
-    const createArray = () => [23, 45, 8, 53, 57, 98, 1, 46, 37, 76, 17, 68, 13, 5];
-    const getDescSortedArray = (array) => array.slice().sort((e1, e2) => e2 - e1);
-    const getFirstFiveElements = (array) => array.slice(0, 5);
-    const getLastFiveElements = (array) => array.slice(-5);
-    const getEvenElementsSum = (array) => array.filter(e => e % 2 === 0).reduce((sum, e) => sum + e, 0);
+"use strict";
 
-    const createArrayFrom1To100 = () => {
+(function () {
+    function getDescendingSortedArray(array) {
+        return array.sort((a, b) => b - a);
+    }
+
+    function getFirstNElements(array, count) {
+        return array.slice(0, count);
+    }
+
+    function getLastNElements(array, count) {
+        return array.slice(-count);
+    }
+
+    function getEvenNumbersSum(array) {
+        return array.reduce((sum, element) => element % 2 === 0 ? sum + element : sum, 0);
+    }
+
+    function createArrayFrom1To100() {
         const array = [];
 
         for (let i = 1; i <= 100; i++) {
@@ -13,17 +25,22 @@
         }
 
         return array;
-    };
-    const getEvenElementsSquares = (array) => array.filter(num => num % 2 === 0).map(num => num ** 2);
+    }
 
-    const array = createArray();
+    function getEvenNumbersSquares(array) {
+        return array.filter(number => number % 2 === 0).map(number => number * number);
+    }
+
+    const array = [23, 45, 8, 53, 57, 98, 1, 46, 37, 76, 17, 68, 13, 5];
+    const COUNT = 5;
+
     console.log("Исходный массив: ", array);
-    console.log("Отсортированный по убыванию массив: ", getDescSortedArray(array));
-    console.log("Первые 5 элементов: ", getFirstFiveElements(array));
-    console.log("Последние 5 элементов: ", getLastFiveElements(array));
-    console.log("Сумма четных элементов: ", getEvenElementsSum(array));
+    console.log("Отсортированный по убыванию массив: ", getDescendingSortedArray(array));
+    console.log("Первые 5 элементов: ", getFirstNElements(array, COUNT));
+    console.log("Последние 5 элементов: ", getLastNElements(array, COUNT));
+    console.log("Сумма четных элементов: ", getEvenNumbersSum(array));
 
     const arrayFrom1To100 = createArrayFrom1To100();
     console.log("Массив от 1 до 100: ", arrayFrom1To100);
-    console.log("Квадраты четных чисел: ",getEvenElementsSquares(arrayFrom1To100));
+    console.log("Квадраты четных чисел: ", getEvenNumbersSquares(arrayFrom1To100));
 })();
