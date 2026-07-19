@@ -50,8 +50,7 @@
         const populationsByCountries = {};
 
         countries.forEach(country => {
-            populationsByCountries[country.name] = country.cities.reduce((sum, city) =>
-                sum + city.population, 0);
+            populationsByCountries[country.name] = country.cities.reduce((sum, city) => sum + city.population, 0);
         });
 
         return populationsByCountries;
