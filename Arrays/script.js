@@ -1,15 +1,15 @@
 "use strict";
 
 (function () {
-    function getDescendingSortedArray(array) {
+    function sortDescending(array) {
         return array.sort((a, b) => b - a);
     }
 
-    function getFirstNElements(array, count) {
+    function getFirstElements(array, count) {
         return array.slice(0, count);
     }
 
-    function getLastNElements(array, count) {
+    function getLastElements(array, count) {
         return array.slice(-count);
     }
 
@@ -32,12 +32,12 @@
     }
 
     const array = [23, 45, 8, 53, 57, 98, 1, 46, 37, 76, 17, 68, 13, 5];
-    const COUNT = 5;
+    const count = 5;
 
     console.log("Исходный массив: ", array);
-    console.log("Отсортированный по убыванию массив: ", getDescendingSortedArray(array));
-    console.log("Первые 5 элементов: ", getFirstNElements(array, COUNT));
-    console.log("Последние 5 элементов: ", getLastNElements(array, COUNT));
+    console.log("Отсортированный по убыванию массив: ", sortDescending(array));
+    console.log("Первые 5 элементов: ", getFirstElements(array, count));
+    console.log("Последние 5 элементов: ", getLastElements(array, count));
     console.log("Сумма четных элементов: ", getEvenNumbersSum(array));
 
     const arrayFrom1To100 = createArrayFrom1To100();
