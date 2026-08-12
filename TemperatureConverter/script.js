@@ -34,6 +34,11 @@ document.addEventListener("DOMContentLoaded", function() {
         celsiusInput.focus();
     }
 
+    function extractCelsius(value) {
+        const cleanValue = value.replace(/[°℃]\s*C?|C\s*$/i, "").trim();
+        return Number(cleanValue);
+    }
+
     form.addEventListener("submit", function(e) {
         e.preventDefault();
 
@@ -44,10 +49,10 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        const celsius = Number(inputValue);
+        const celsius = extractCelsius(inputValue);
 
         if (Number.isNaN(celsius)) {
-            showError("Введите корректное число", true);
+            showError("Введите корректное значение", true);
             return;
         }
 
@@ -56,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
+        celsiusInput.value = `${celsius} °C`;
         kelvinOutput.value = `${celsiusToKelvin(celsius).toFixed(2)} K`;
         fahrenheitOutput.value = `${celsiusToFahrenheit(celsius).toFixed(2)} °F`;
     });
