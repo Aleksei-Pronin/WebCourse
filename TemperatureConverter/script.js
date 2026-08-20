@@ -6,11 +6,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const kelvinOutput = document.getElementById("kelvin-scale");
     const fahrenheitOutput = document.getElementById("fahrenheit-scale");
 
-    function celsiusToKelvin(celsius) {
-        return celsius + 273.15;
+    const ABSOLUTE_ZERO_CELSIUS = -273.15;
+
+    function convertCelsiusToKelvin(celsius) {
+        return celsius - ABSOLUTE_ZERO_CELSIUS;
     }
 
-    function celsiusToFahrenheit(celsius) {
+    function convertCelsiusToFahrenheit(celsius) {
         return celsius * 9 / 5 + 32;
     }
 
@@ -19,18 +21,8 @@ document.addEventListener("DOMContentLoaded", function() {
         fahrenheitOutput.value = "";
     }
 
-    function clearFields() {
-        clearOutputs();
-        celsiusInput.value = "";
-    }
-
-    function showError(message, clear = false) {
+    function showError(message) {
         alert(message);
-
-        if (clear) {
-            clearFields();
-        }
-
         celsiusInput.focus();
     }
 
@@ -42,28 +34,28 @@ document.addEventListener("DOMContentLoaded", function() {
     form.addEventListener("submit", function(e) {
         e.preventDefault();
 
-        const inputValue = celsiusInput.value.trim();
+        const celsiusInputString = celsiusInput.value.trim();
 
-        if (inputValue === "") {
-            showError("Введите температуру");
+        if (celsiusInputString === "") {
+            showError("Введите температуру в градусах Цельсия");
             return;
         }
 
-        const celsius = extractCelsius(inputValue);
+        const celsius = extractCelsius(celsiusInputString);
 
         if (Number.isNaN(celsius)) {
-            showError("Введите корректное значение", true);
+            showError("Введите корректное значение температуры в градусах Цельсия");
             return;
         }
 
-        if (celsius < -273.15) {
-            showError("Температура не может быть ниже -273.15°C", true);
+        if (celsius < ABSOLUTE_ZERO_CELSIUS) {
+            showError(`Температура не может быть ниже ${ABSOLUTE_ZERO_CELSIUS} °C`);
             return;
         }
 
         celsiusInput.value = `${celsius} °C`;
-        kelvinOutput.value = `${celsiusToKelvin(celsius).toFixed(2)} K`;
-        fahrenheitOutput.value = `${celsiusToFahrenheit(celsius).toFixed(2)} °F`;
+        kelvinOutput.value = `${convertCelsiusToKelvin(celsius).toFixed(2)} K`;
+        fahrenheitOutput.value = `${convertCelsiusToFahrenheit(celsius).toFixed(2)} °F`;
     });
 
     celsiusInput.addEventListener("input", clearOutputs);
