@@ -1,12 +1,11 @@
 body {
     font-family: Arial, sans-serif;
     background: #e6e3e3;
-    padding: 20px;
 }
 
 .main-block {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 20px 30px;
     background: #fff;
     border-radius: 10px;
