@@ -1,0 +1,29 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #e6e3e3;
+}
+
+.main-block {
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+.error-message {
+    visibility: hidden;
+    height: 14px;
+    color: #ea4130;
+    font-size: 13px;
+}
+
+.invalid {
+    border-color: #ea4130;
+}
+
+.invalid + .error-message,
+.invalid .error-message {
+    visibility: visible;
+}
+
+.todo-list li:hover {
+    background: #e9ecef;
+}
