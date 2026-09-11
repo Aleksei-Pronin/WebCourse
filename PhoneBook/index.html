@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Телефонная книга</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="node_modules/notiflix/dist/notiflix-3.2.8.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script defer src="node_modules/notiflix/dist/notiflix-3.2.8.min.js"></script>
+    <script defer src="script.js"></script>
+</head>
+<body>
+<div class="container py-4">
+    <h1 class="text-center mb-4">Телефонная книга</h1>
+
+    <div class="row g-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4 text-center">Контакты</h5>
+
+                    <div class="input-group mb-3">
+                        <label for="filter" class="visually-hidden">Поиск по контактам</label>
+                        <input type="text" class="form-control" id="filter" placeholder="Поиск по контактам">
+                        <button class="btn btn-primary" id="filter-button" type="button" title="Найти">
+                            <i class="bi bi-search"></i>
+                        </button>
+                        <button class="btn btn-secondary" id="clear-filter-button" type="button" title="Сбросить">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+
+                    <button class="btn btn-outline-danger mb-3" id="delete-selected-button" type="button">
+                        <i class="bi bi-trash me-1"></i>Удалить выбранные
+                    </button>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle mb-0" id="phonebook">
+                            <thead class="table-primary">
+                            <tr>
+                                <th scope="col" class="text-center select-col">
+                                    <input type="checkbox" id="select-all" title="Выбрать все">
+                                </th>
+                                <th scope="col" class="text-center number-col">№</th>
+                                <th scope="col">Фамилия</th>
+                                <th scope="col">Имя</th>
+                                <th scope="col">Номер телефона</th>
+                                <th scope="col" class="text-center actions-col"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="contacts-body">
+                            <tr class="empty">
+                                <td colspan="6" class="text-center text-secondary py-4">Нет контактов</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4 text-center">Новый контакт</h5>
+
+                    <form id="contact-form" novalidate autocomplete="off">
+                        <div class="mb-3">
+                            <label for="surname" class="form-label">Фамилия</label>
+                            <input type="text" class="form-control" id="surname" placeholder="Фамилия">
+                            <div class="invalid-feedback">Заполните поле</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Имя</label>
+                            <input type="text" class="form-control" id="name" placeholder="Имя">
+                            <div class="invalid-feedback">Заполните поле</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Номер телефона</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="Номер телефона">
+                            <div class="invalid-feedback">Заполните поле</div>
+                        </div>
+
+                        <button class="btn btn-primary w-100" type="submit">
+                            <i class="bi bi-plus-lg me-1"></i>Добавить контакт
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
