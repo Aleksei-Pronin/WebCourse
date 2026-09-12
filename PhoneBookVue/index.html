@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Телефонная книга</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="node_modules/notiflix/dist/notiflix-3.2.8.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="node_modules/notiflix/dist/notiflix-3.2.8.min.js"></script>
+    <script defer src="node_modules/vue/dist/vue.global.js"></script>
+    <script defer src="script.js"></script>
+</head>
+<body>
+<div id="app" class="container py-4">
+    <h1 class="text-center mb-4">Телефонная книга</h1>
+
+    <div class="row g-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4 text-center">Контакты</h5>
+
+                    <div class="input-group mb-3">
+                        <label for="filter" class="visually-hidden">Поиск</label>
+                        <input v-model="filter" type="text" class="form-control" id="filter" placeholder="Поиск">
+                        <button class="btn btn-primary" type="button" title="Найти"
+                                @click="filterContacts">
+                            <i class="bi bi-search"></i>
+                        </button>
+                        <button class="btn btn-secondary" type="button" title="Сбросить"
+                                @click="clearFilter">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+
+                    <button v-if="selectedContacts.length > 0" class="btn btn-outline-danger mb-3"
+                            type="button" @click="deleteSelected">
+                        <i class="bi bi-trash me-1"></i>Удалить выбранные
+                    </button>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle mb-0">
+                            <thead class="table-primary">
+                            <tr>
+                                <th scope="col" class="text-center">
+                                    <input type="checkbox" title="Выбрать все" v-model="selectAll"
+                                           @change="selectAllContacts">
+                                </th>
+                                <th scope="col" class="text-center">№</th>
+                                <th scope="col" class="text-center">Фамилия</th>
+                                <th scope="col" class="text-center">Имя</th>
+                                <th scope="col" class="text-center">Номер телефона</th>
+                                <th scope="col" class="text-center">Действие</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-if="filteredContacts.length === 0">
+                                <td colspan="6" class="text-center text-secondary py-4">Нет контактов</td>
+                            </tr>
+                            <tr v-for="(contact, index) in filteredContacts" :key="contact.id">
+                                <td class="text-center">
+                                    <input type="checkbox" v-model="contact.selected" @change="updateSelectAll">
+                                </td>
+
+                                <td class="text-center">{{ index + 1 }}</td>
+
+                                <td class="text-center">
+                                    <template v-if="contact.editing">
+                                        <input class="form-control" type="text" v-model="contact.editSurname"
+                                               :class="{ 'is-invalid': contact.surnameError }"
+                                               @input="contact.surnameError = ''">
+                                        <div class="invalid-feedback">{{ contact.surnameError }}</div>
+                                    </template>
+                                    <template v-else>{{ contact.surname }}</template>
+                                </td>
+
+                                <td class="text-center">
+                                    <template v-if="contact.editing">
+                                        <input class="form-control" type="text" v-model="contact.editName"
+                                               :class="{ 'is-invalid': contact.nameError }"
+                                               @input="contact.nameError = ''">
+                                        <div class="invalid-feedback">{{ contact.nameError }}</div>
+                                    </template>
+                                    <template v-else>{{ contact.name }}</template>
+                                </td>
+
+                                <td class="text-center">
+                                    <template v-if="contact.editing">
+                                        <input class="form-control" type="tel" v-model="contact.editPhone"
+                                               :class="{ 'is-invalid': contact.phoneError }"
+                                               @input="contact.phoneError = ''">
+                                        <div class="invalid-feedback">{{ contact.phoneError }}</div>
+                                    </template>
+
+                                    <template v-else>{{ contact.phone }}</template>
+                                </td>
+
+                                <td class="actions-cell text-center">
+                                    <template v-if="!contact.editing">
+                                        <button class="btn btn-sm btn-outline-primary me-2" type="button"
+                                                title="Редактировать" @click="editContact(contact)">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+
+                                        <button class="btn btn-sm btn-outline-danger" type="button"
+                                                title="Удалить" @click="deleteContact(contact)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </template>
+
+                                    <template v-else>
+                                        <button class="btn btn-sm btn-success me-2" type="button"
+                                                title="Сохранить" @click="saveContact(contact)">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+
+                                        <button class="btn btn-sm btn-secondary" type="button"
+                                                title="Отменить" @click="cancelEdit(contact)">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </template>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4 text-center">Новый контакт</h5>
+
+                    <form novalidate autocomplete="off" @submit.prevent="addContact">
+                        <div class="mb-3">
+                            <label for="surname" class="form-label">Фамилия</label>
+                            <input type="text" class="form-control" id="surname" placeholder="Фамилия"
+                                   v-model.trim="newContact.surname" :class="{ 'is-invalid': errors.surname }"
+                                   @input="errors.surname = ''">
+                            <div class="invalid-feedback">{{ errors.surname }}</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Имя</label>
+                            <input type="text" class="form-control" id="name" placeholder="Имя"
+                                   v-model.trim="newContact.name" :class="{ 'is-invalid': errors.name }"
+                                   @input="errors.name = ''">
+                            <div class="invalid-feedback">{{ errors.name }}</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Номер телефона</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="Номер телефона"
+                                   v-model.trim="newContact.phone" :class="{ 'is-invalid': errors.phone }"
+                                   @input="errors.phone = ''">
+                            <div class="invalid-feedback">{{ errors.phone }}</div>
+                        </div>
+
+                        <button class="btn btn-primary w-100" type="submit">
+                            <i class="bi bi-plus-lg me-1"></i>Добавить контакт
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
