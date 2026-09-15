@@ -1,0 +1,17 @@
+body {
+    background-color: #e7f0ff;
+}
+
+.notiflix-report-title,
+.notiflix-report-message {
+    text-align: center;
+}
+
+.notiflix-report-icon svg {
+    width: 70px !important;
+    height: 70px !important;
+}
+
+.notiflix-report-icon {
+    transform: translateY(30px);
+}
