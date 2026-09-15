@@ -42,6 +42,7 @@ const app = Vue.createApp({
             isNewSurnameInvalid: false,
             isNewNameInvalid: false,
             isNewPhoneInvalid: false,
+            isPhoneError: false,
             selectAll: false,
             service: new ContactsService()
         };
@@ -73,6 +74,8 @@ const app = Vue.createApp({
         },
 
         addContact() {
+            this.isPhoneError = false;
+
             this.isNewSurnameInvalid = !this.surname.trim();
             this.isNewNameInvalid = !this.name.trim();
             this.isNewPhoneInvalid = !this.phone.trim();
@@ -94,11 +97,8 @@ const app = Vue.createApp({
             this.service.addContact(contact)
                 .then(response => {
                     if (!response.success) {
-                        Notiflix.Report.failure(
-                            ERROR_TITLE,
-                            response.message,
-                            OK_BUTTON
-                        );
+                        this.isPhoneError = true;
+                        Notiflix.Report.failure(ERROR_TITLE, response.message, OK_BUTTON);
                         return;
                     }
 
@@ -109,6 +109,7 @@ const app = Vue.createApp({
                     this.isNewSurnameInvalid = false;
                     this.isNewNameInvalid = false;
                     this.isNewPhoneInvalid = false;
+                    this.isPhoneError = false;
 
                     this.getContacts();
                 })
@@ -128,7 +129,8 @@ const app = Vue.createApp({
                 phone: contact.phone,
                 isSurnameInvalid: false,
                 isNameInvalid: false,
-                isPhoneInvalid: false
+                isPhoneInvalid: false,
+                isPhoneError: false
             };
         },
 
@@ -142,6 +144,8 @@ const app = Vue.createApp({
             if (!editContact) {
                 return;
             }
+
+            editContact.isPhoneError = false;
 
             editContact.isSurnameInvalid = !editContact.surname.trim();
             editContact.isNameInvalid = !editContact.name.trim();
@@ -164,6 +168,7 @@ const app = Vue.createApp({
             this.service.editContact(contactId, contact)
                 .then(response => {
                     if (!response.success) {
+                        editContact.isPhoneError = true;
                         Notiflix.Report.failure(ERROR_TITLE, response.message, OK_BUTTON);
                         return;
                     }

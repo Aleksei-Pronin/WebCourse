@@ -68,21 +68,25 @@
                                 <template v-if="editingContacts[contact.id]">
                                     <td>
                                         <input v-model.trim="editingContacts[contact.id].surname" type="text"
-                                               class="form-control form-control-sm">
+                                               class="form-control form-control-sm"
+                                               :class="{ 'is-invalid': editingContacts[contact.id].isSurnameInvalid }">
                                         <div v-if="editingContacts[contact.id].isSurnameInvalid"
                                              class="text-danger small mt-1">Необходимо заполнить поле
                                         </div>
                                     </td>
                                     <td>
                                         <input v-model.trim="editingContacts[contact.id].name" type="text"
-                                               class="form-control form-control-sm">
+                                               class="form-control form-control-sm"
+                                               :class="{ 'is-invalid': editingContacts[contact.id].isNameInvalid }">
                                         <div v-if="editingContacts[contact.id].isNameInvalid"
                                              class="text-danger small mt-1">Необходимо заполнить поле
                                         </div>
                                     </td>
                                     <td>
                                         <input v-model.trim="editingContacts[contact.id].phone" type="tel"
-                                               class="form-control form-control-sm">
+                                               class="form-control form-control-sm"
+                                               :class="{ 'is-invalid': editingContacts[contact.id].isPhoneInvalid ||
+                                               editingContacts[contact.id].isPhoneError }">
                                         <div v-if="editingContacts[contact.id].isPhoneInvalid"
                                              class="text-danger small mt-1">Необходимо заполнить поле
                                         </div>
@@ -131,23 +135,24 @@
                     <form @submit.prevent="addContact" novalidate autocomplete="off">
                         <div class="mb-3">
                             <label for="surname" class="form-label">Фамилия</label>
-                            <input v-model.trim="surname" type="text" class="form-control" id="surname"
-                                   placeholder="Фамилия">
+                            <input v-model.trim="surname" type="text" class="form-control"
+                                   :class="{ 'is-invalid': isNewSurnameInvalid }" id="surname" placeholder="Фамилия">
                             <div v-if="isNewSurnameInvalid" class="text-danger small mt-1">
                                 Необходимо заполнить поле
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">Имя</label>
-                            <input v-model.trim="name" type="text" class="form-control" id="name"
-                                   placeholder="Имя">
+                            <input v-model.trim="name" type="text" class="form-control"
+                                   :class="{ 'is-invalid': isNewNameInvalid }" id="name" placeholder="Имя">
                             <div v-if="isNewNameInvalid" class="text-danger small mt-1">
                                 Необходимо заполнить поле
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="phone" class="form-label">Номер телефона</label>
-                            <input v-model.trim="phone" type="text" class="form-control" id="phone"
+                            <input v-model.trim="phone" type="text" class="form-control"
+                                   :class="{ 'is-invalid': isNewPhoneInvalid || isPhoneError }" id="phone"
                                    placeholder="Номер телефона">
                             <div v-if="isNewPhoneInvalid" class="text-danger small mt-1">
                                 Необходимо заполнить поле
