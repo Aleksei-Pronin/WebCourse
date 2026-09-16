@@ -30,7 +30,7 @@ class ContactsService {
     }
 }
 
-const app = Vue.createApp({
+Vue.createApp({
     data() {
         return {
             contacts: [],
@@ -255,9 +255,7 @@ const app = Vue.createApp({
             this.getContacts();
         }
     }
-});
-
-app.mount("#app");
+}).mount("#app");
 
 Notiflix.Confirm.init({
     borderRadius: "0.375rem",
@@ -271,7 +269,6 @@ Notiflix.Report.init({
     borderRadius: "0.375rem",
     titleFontSize: "20px",
     failure: {
-        svgColor: "#dc3545",
         buttonBackground: "#0d6efd"
     }
 });
