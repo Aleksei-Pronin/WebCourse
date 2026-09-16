@@ -1,6 +1,6 @@
 "use strict";
 
-const app = Vue.createApp({
+Vue.createApp({
     data() {
         return {
             contacts: [],
@@ -17,7 +17,9 @@ const app = Vue.createApp({
                 name: "",
                 phone: ""
             },
-            nextId: 1
+            nextId: 1,
+            deleteMessage: "",
+            deleteContactIds: []
         };
     },
 
@@ -102,34 +104,30 @@ const app = Vue.createApp({
         },
 
         deleteContact(contact) {
-            Notiflix.Confirm.show(
-                "Удалить контакт?",
-                "Контакт будет удалён из таблицы",
-                "Удалить",
-                "Отмена",
-                () => {
-                    const index = this.contacts.indexOf(contact);
-
-                    if (index !== -1) {
-                        this.contacts.splice(index, 1);
-                    }
-
-                    this.updateSelectAll();
-                }
-            );
+            this.deleteMessage = "Контакт будет удалён из таблицы";
+            this.deleteContactIds = [contact.id];
+            this.showDeleteModal();
         },
 
         deleteSelected() {
-            Notiflix.Confirm.show(
-                "Удалить выбранные контакты?",
-                "Количество контактов: " + this.selectedContacts.length,
-                "Удалить",
-                "Отмена",
-                () => {
-                    this.contacts = this.contacts.filter(contact => !contact.selected);
-                    this.selectAll = false;
-                }
+            this.deleteMessage = "Количество контактов: " + this.selectedContacts.length;
+            this.deleteContactIds = this.selectedContacts.map(contact => contact.id);
+            this.showDeleteModal();
+        },
+
+        confirmDelete() {
+            bootstrap.Modal.getOrCreateInstance(this.$refs.deleteModal).hide();
+
+            this.contacts = this.contacts.filter(contact =>
+                !this.deleteContactIds.includes(contact.id)
             );
+
+            this.deleteContactIds = [];
+            this.updateSelectAll();
+        },
+
+        showDeleteModal() {
+            bootstrap.Modal.getOrCreateInstance(this.$refs.deleteModal).show();
         },
 
         selectAllContacts() {
@@ -206,14 +204,4 @@ const app = Vue.createApp({
             this.searchText = "";
         }
     }
-});
-
-app.mount("#app");
-
-Notiflix.Confirm.init({
-    borderRadius: "0.375rem",
-    titleColor: "#000",
-    titleFontSize: "20px",
-    okButtonBackground: "#0d6efd",
-    cancelButtonBackground: "#6c757d"
-});
+}).mount("#app");
