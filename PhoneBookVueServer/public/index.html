@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="node_modules/notiflix/dist/notiflix-3.2.8.min.css">
+    <link rel="stylesheet" href="node_modules/toastify-js/src/toastify.css">
     <link rel="stylesheet" href="style.css">
     <title>Телефонная книга</title>
     <script defer src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script defer src="node_modules/notiflix/dist/notiflix-3.2.8.min.js"></script>
     <script defer src="node_modules/vue/dist/vue.global.js"></script>
+    <script defer src="node_modules/toastify-js/src/toastify.js"></script>
     <script defer src="node_modules/axios/dist/axios.min.js"></script>
     <script defer src="script.js"></script>
 </head>
@@ -122,6 +122,26 @@
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="modal fade" ref="deleteModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Подтвердите удаление</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">{{ deleteMessage }}</div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Отмена
+                                    </button>
+                                    <button @click="confirmDelete" type="button" class="btn btn-primary">
+                                        ОК
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

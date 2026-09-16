@@ -1,10 +1,5 @@
 "use strict";
 
-const ERROR_TITLE = "Ошибка";
-const DELETE_TITLE = "Подтвердите удаление";
-const OK_BUTTON = "ОК";
-const CANCEL_BUTTON = "Отмена";
-
 class ContactsService {
     static baseUrl = "/api/contact";
 
@@ -44,6 +39,8 @@ Vue.createApp({
             isNewPhoneInvalid: false,
             isPhoneError: false,
             selectAll: false,
+            deleteMessage: "",
+            deleteContactIds: [],
             service: new ContactsService()
         };
     },
@@ -59,6 +56,17 @@ Vue.createApp({
     },
 
     methods: {
+        showError(message) {
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                close: true,
+                className: "phonebook-toast"
+            }).showToast();
+        },
+
         getContacts() {
             this.service.getContacts(this.searchText)
                 .then(contacts => {
@@ -69,7 +77,7 @@ Vue.createApp({
                     this.selectAll = false;
                 })
                 .catch(() => {
-                    Notiflix.Report.failure(ERROR_TITLE, "Не удалось загрузить список контактов", OK_BUTTON);
+                    this.showError("Не удалось загрузить список контактов");
                 });
         },
 
@@ -98,7 +106,7 @@ Vue.createApp({
                 .then(response => {
                     if (!response.success) {
                         this.isPhoneError = true;
-                        Notiflix.Report.failure(ERROR_TITLE, response.message, OK_BUTTON);
+                        this.showError(response.message);
                         return;
                     }
 
@@ -114,7 +122,7 @@ Vue.createApp({
                     this.getContacts();
                 })
                 .catch(() => {
-                    Notiflix.Report.failure(ERROR_TITLE, "Не удалось добавить контакт", OK_BUTTON);
+                    this.showError("Не удалось добавить контакт");
                 });
         },
 
@@ -169,7 +177,7 @@ Vue.createApp({
                 .then(response => {
                     if (!response.success) {
                         editContact.isPhoneError = true;
-                        Notiflix.Report.failure(ERROR_TITLE, response.message, OK_BUTTON);
+                        this.showError(response.message);
                         return;
                     }
 
@@ -177,62 +185,46 @@ Vue.createApp({
                     this.getContacts();
                 })
                 .catch(() => {
-                    Notiflix.Report.failure(ERROR_TITLE, "Ошибка при сохранении изменений", OK_BUTTON);
+                    this.showError("Ошибка при сохранении изменений");
                 });
         },
 
         deleteContact(contact) {
-            Notiflix.Confirm.show(
-                DELETE_TITLE,
-                "Контакт будет удалён из таблицы",
-                OK_BUTTON,
-                CANCEL_BUTTON,
-                () => {
-                    this.service.deleteContact(contact.id)
-                        .then(response => {
-                            if (!response.success) {
-                                Notiflix.Report.failure(ERROR_TITLE, response.message, OK_BUTTON);
-                                return;
-                            }
-
-                            this.getContacts();
-                        })
-                        .catch(() => {
-                            Notiflix.Report.failure(ERROR_TITLE, "Не удалось удалить контакт", OK_BUTTON);
-                        });
-                }
-            );
+            this.deleteMessage = "Контакт будет удалён из таблицы";
+            this.deleteContactIds = [contact.id];
+            this.showDeleteModal();
         },
 
         deleteSelected() {
-            Notiflix.Confirm.show(
-                DELETE_TITLE,
-                "Количество контактов: " + this.selectedContacts.length,
-                OK_BUTTON,
-                CANCEL_BUTTON,
-                () => {
-                    const requests = this.selectedContacts.map(contact =>
-                        this.service.deleteContact(contact.id)
-                    );
+            this.deleteMessage = "Количество контактов: " + this.selectedContacts.length;
+            this.deleteContactIds = this.selectedContacts.map(contact => contact.id);
+            this.showDeleteModal();
+        },
 
-                    Promise.all(requests)
-                        .then(responses => {
-                            const failedResponse = responses.find(
-                                response => !response.success
-                            );
+        confirmDelete() {
+            bootstrap.Modal.getOrCreateInstance(this.$refs.deleteModal).hide();
 
-                            if (failedResponse) {
-                                Notiflix.Report.failure(ERROR_TITLE, failedResponse.message, OK_BUTTON);
-                                return;
-                            }
+            const requests = this.deleteContactIds.map(id => this.service.deleteContact(id));
 
-                            this.getContacts();
-                        })
-                        .catch(() => {
-                            Notiflix.Report.failure(ERROR_TITLE, "Не удалось удалить контакты", OK_BUTTON);
-                        });
-                }
-            );
+            Promise.all(requests)
+                .then(responses => {
+                    const failedResponse = responses.find(response => !response.success);
+
+                    if (failedResponse) {
+                        this.showError(failedResponse.message);
+                        return;
+                    }
+
+                    this.getContacts();
+                })
+                .catch(() => {
+                    this.showError(
+                        this.deleteContactIds.length === 1 ? "Не удалось удалить контакт" : "Не удалось удалить контакты");
+                });
+        },
+
+        showDeleteModal() {
+            bootstrap.Modal.getOrCreateInstance(this.$refs.deleteModal).show();
         },
 
         selectAllContacts() {
@@ -256,19 +248,3 @@ Vue.createApp({
         }
     }
 }).mount("#app");
-
-Notiflix.Confirm.init({
-    borderRadius: "0.375rem",
-    titleColor: "#000",
-    titleFontSize: "20px",
-    okButtonBackground: "#0d6efd",
-    cancelButtonBackground: "#6c757d"
-});
-
-Notiflix.Report.init({
-    borderRadius: "0.375rem",
-    titleFontSize: "20px",
-    failure: {
-        buttonBackground: "#0d6efd"
-    }
-});
