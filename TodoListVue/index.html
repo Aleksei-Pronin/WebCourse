@@ -6,8 +6,8 @@
     <title>Список задач</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="node_modules/vue/dist/vue.global.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="node_modules/vue/dist/vue.global.js"></script>
+    <script defer src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script defer src="script.js"></script>
 </head>
 <body>
@@ -20,10 +20,11 @@
                 Введите текст задачи
             </label>
 
-            <div class="mb-1">
-                <input id="new-todo-item-text-field" class="form-control" :class="{ invalid: isNewTodoItemTextInvalid }"
+            <div class="mb-3">
+                <input id="new-todo-item-text-field" class="form-control"
+                       :class="{ 'is-invalid': isNewTodoItemTextInvalid }"
                        v-model="newTodoItemText">
-                <div class="error-message">Необходимо заполнить поле</div>
+                <div class="invalid-feedback" v-if="isNewTodoItemTextInvalid">Необходимо заполнить поле</div>
             </div>
 
             <button class="btn btn-primary w-100 py-2">Создать</button>
@@ -34,9 +35,10 @@
                 class="d-flex justify-content-between align-items-center p-2 border rounded mb-2">
                 <template v-if="item.isEditing">
                     <form @submit.prevent="saveTodoItem(item)" class="w-100">
-                        <div class="mb-1" :class="{ invalid: item.isInvalid }">
-                            <input class="form-control" v-model="item.editingTodoItemText">
-                            <div class="error-message">Необходимо заполнить поле</div>
+                        <div class="mb-2">
+                            <input class="form-control" :class="{ 'is-invalid': item.isInvalid }"
+                                   v-model="item.editingTodoItemText">
+                            <div class="invalid-feedback" v-if="item.isInvalid">Необходимо заполнить поле</div>
                         </div>
 
                         <button class="btn btn-success py-1 px-3 me-1">
