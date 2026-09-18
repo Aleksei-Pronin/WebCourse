@@ -3,10 +3,10 @@
     <h1 class="text-center mb-4">Телефонная книга</h1>
 
     <div class="row g-4">
-      <div class="col-md-8">
+      <div class="col-md-8 order-2 order-md-1">
         <div class="card shadow-sm">
           <div class="card-body">
-            <h5 class="card-title mb-4 text-center">Контакты</h5>
+            <h2 class="card-title mb-4 text-center fs-5">Контакты</h2>
 
             <form @submit.prevent="getContacts" class="input-group mb-3">
               <label for="filter" class="visually-hidden">Поиск</label>
@@ -26,7 +26,7 @@
             </button>
 
             <div class="table-responsive">
-              <table class="table table-bordered table-hover align-middle mb-0">
+              <table class="table table-bordered table-hover mb-0">
                 <thead class="table-primary">
                 <tr>
                   <th class="text-center">
@@ -111,10 +111,10 @@
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-4 order-1 order-md-2">
         <div class="card shadow-sm">
           <div class="card-body">
-            <h5 class="card-title mb-4 text-center">Новый контакт</h5>
+            <h2 class="card-title mb-4 text-center fs-5">Новый контакт</h2>
 
             <form @submit.prevent="addContact" novalidate autocomplete="off">
               <div class="mb-3">
@@ -156,13 +156,13 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Подтвердите удаление</h5>
+            <h2 class="modal-title  fs-5">Подтвердите удаление</h2>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">{{ deleteMessage }}</div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-            <button @click="confirmDelete" type="button" class="btn btn-primary">ОК</button>
+            <button @click="confirmDelete" type="button" class="btn btn-danger">Удалить</button>
           </div>
         </div>
       </div>
@@ -385,12 +385,13 @@ export default {
     },
 
     updateSelectAll() {
-      if (this.contacts.length === 0) {
-        this.selectAll = false;
+      if (!this.selectAll) {
         return;
       }
 
-      this.selectAll = this.contacts.every(contact => contact.selected);
+      if (this.contacts.some(contact => !contact.selected)) {
+        this.selectAll = false;
+      }
     },
 
     clearFilter() {
