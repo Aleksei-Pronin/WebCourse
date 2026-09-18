@@ -42,7 +42,7 @@ Vue.createApp({
         },
 
         selectedContacts() {
-            return this.contacts.filter(contact => contact.selected);
+            return this.filteredContacts.filter(contact => contact.selected);
         }
     },
 
@@ -137,12 +137,13 @@ Vue.createApp({
         },
 
         updateSelectAll() {
-            if (this.contacts.length === 0) {
-                this.selectAll = false;
+            if (!this.selectAll) {
                 return;
             }
 
-            this.selectAll = this.contacts.every(contact => contact.selected);
+            if (this.contacts.some(contact => !contact.selected)) {
+                this.selectAll = false;
+            }
         },
 
         editContact(contact) {
