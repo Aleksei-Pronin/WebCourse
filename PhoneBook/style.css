@@ -10,11 +10,3 @@ body {
     width: 38px;
     height: 32px;
 }
-
-.hidden-button {
-    display: none;
-}
-
-#delete-selected-button {
-    display: none;
-}

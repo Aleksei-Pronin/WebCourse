@@ -5,7 +5,7 @@ $(function () {
         borderRadius: "0.375rem",
         titleColor: "#000",
         titleFontSize: "20px",
-        okButtonBackground: "#0d6efd",
+        okButtonBackground: "#dc3545",
         cancelButtonBackground: "#6c757d"
     });
 
@@ -43,7 +43,7 @@ $(function () {
     }
 
     function updateNumbers() {
-        contactsBody.find("tr").not(".empty").each(function (index) {
+        contactsBody.find("tr").not(".empty").filter(":visible").each(function (index) {
             $(this).find(".number").text(index + 1);
         });
     }
@@ -61,7 +61,11 @@ $(function () {
     }
 
     function updateDeleteSelectedButton() {
-        const hasSelected = contactsBody.find(".select-contact:checked").length > 0;
+        const hasSelected = contactsBody.find(".select-contact:checked")
+            .closest("tr")
+            .filter(":visible")
+            .length > 0;
+
         deleteSelectedButton.toggle(hasSelected);
     }
 
@@ -102,11 +106,11 @@ $(function () {
     }
 
     function setEditMode(row, isEditing) {
-        row.find(".edit-button, .delete-button").toggleClass("hidden-button", isEditing);
-        row.find(".save-button, .cancel-button").toggleClass("hidden-button", !isEditing);
+        row.find(".edit-button, .delete-button").toggle(!isEditing);
+        row.find(".save-button, .cancel-button").toggle(isEditing);
     }
 
-    form.on("submit", function (e) {
+    form.on("submit", e => {
         e.preventDefault();
 
         clearErrors();
@@ -142,10 +146,10 @@ $(function () {
                     <button class="btn btn-sm btn-outline-danger delete-button" type="button" title="Удалить">
                         <i class="bi bi-trash"></i>
                     </button>
-                    <button class="btn btn-sm btn-success save-button hidden-button" type="button" title="Сохранить">
+                    <button class="btn btn-sm btn-success save-button" type="button" title="Сохранить">
                         <i class="bi bi-check-lg"></i>
                     </button>
-                    <button class="btn btn-sm btn-secondary cancel-button hidden-button" type="button" title="Отменить">
+                    <button class="btn btn-sm btn-secondary cancel-button" type="button" title="Отменить">
                         <i class="bi bi-x-lg"></i>
                     </button>
                 </td>
@@ -157,21 +161,28 @@ $(function () {
         newContactRow.find(".phone").text(phone);
 
         contactsBody.append(newContactRow);
+        setEditMode(newContactRow, false);
 
         form[0].reset();
         clearErrors();
         updateNumbers();
     });
 
-    selectAll.on("change", function () {
-        contactsBody.find(".select-contact").prop("checked", $(this).prop("checked"));
+    selectAll.on("change", () => {
+        contactsBody.find(".select-contact")
+            .closest("tr")
+            .filter(":visible")
+            .find(".select-contact")
+            .prop("checked", selectAll.prop("checked"));
+
         updateDeleteSelectedButton();
     });
 
     contactsBody.on("change", ".select-contact", function () {
-        const allContacts = contactsBody.find(".select-contact").length;
-        const selectedContacts = contactsBody.find(".select-contact:checked").length;
-        selectAll.prop("checked", allContacts > 0 && allContacts === selectedContacts);
+        if (!$(this).prop("checked")) {
+            selectAll.prop("checked", false);
+        }
+
         updateDeleteSelectedButton();
     });
 
@@ -190,7 +201,10 @@ $(function () {
     });
 
     deleteSelectedButton.on("click", function () {
-        const selectedRows = contactsBody.find(".select-contact:checked").closest("tr");
+        const selectedRows = contactsBody
+            .find(".select-contact:checked")
+            .closest("tr")
+            .filter(":visible");
 
         Notiflix.Confirm.show(
             "Удалить выбранные контакты?",
@@ -255,15 +269,23 @@ $(function () {
 
         contactsBody.find("tr").not(".empty").each(function () {
             const row = $(this);
-            const rowText = row.find(".surname, .name, .phone").text().toLowerCase();
+            const rowText = row.find(".surname, .name, .phone").map((index, element) =>
+                $(element).text()
+            ).get().join(" ").toLowerCase();
             row.toggle(rowText.includes(searchText));
         });
+
+        updateNumbers();
+        updateDeleteSelectedButton();
     });
 
-    clearFilterButton.on("click", function () {
+    clearFilterButton.on("click", () => {
         filter.val("");
         contactsBody.find("tr").not(".empty").show();
+        updateNumbers();
+        updateDeleteSelectedButton();
     });
 
     updateNumbers();
+    updateDeleteSelectedButton();
 });
