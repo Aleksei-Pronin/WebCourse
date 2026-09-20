@@ -10,11 +10,7 @@ router.get("/api/contact", function (req, res) {
     if (term.length === 0) {
         res.send(contacts);
     } else {
-        res.send(contacts.filter(c =>
-            c.surname.toUpperCase().includes(term) ||
-            c.name.toUpperCase().includes(term) ||
-            c.phone.toUpperCase().includes(term)
-        ));
+        res.send(contacts.filter(c => (c.surname + " " + c.name + " " + c.phone).toUpperCase().includes(term)));
     }
 });
 
