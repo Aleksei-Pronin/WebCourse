@@ -24,10 +24,7 @@ router.post("/api/contact", function (req, res) {
     const phoneInUpperCase = contact.phone.toUpperCase();
 
     if (contacts.some(c => c.phone.toUpperCase() === phoneInUpperCase)) {
-        res.send({
-            success: false,
-            message: "Уже есть контакт с таким номером"
-        });
+        res.send({success: false, message: "Уже есть контакт с таким номером"});
         return;
     }
 
@@ -40,10 +37,7 @@ router.post("/api/contact", function (req, res) {
 
     ++currentContactId;
 
-    res.send({
-        success: true,
-        message: null
-    });
+    res.send({success: true, message: null});
 });
 
 router.put("/api/contact/:id", function (req, res) {
@@ -57,10 +51,7 @@ router.put("/api/contact/:id", function (req, res) {
     const contactIndex = contacts.findIndex(c => c.id === id);
 
     if (contactIndex === -1) {
-        res.send({
-            success: false,
-            message: "Контакт не найден"
-        });
+        res.send({success: false, message: "Контакт не найден"});
         return;
     }
 
@@ -72,10 +63,7 @@ router.put("/api/contact/:id", function (req, res) {
     );
 
     if (isPhoneExists) {
-        res.send({
-            success: false,
-            message: "Уже есть другой контакт с таким номером"
-        });
+        res.send({success: false, message: "Уже есть другой контакт с таким номером"});
         return;
     }
 
@@ -86,10 +74,28 @@ router.put("/api/contact/:id", function (req, res) {
         phone: contact.phone
     };
 
-    res.send({
-        success: true,
-        message: null
+    res.send({success: true, message: null});
+});
+
+router.delete("/api/contact", function (req, res) {
+    const contactIds = req.body;
+    let deletedCount = 0;
+
+    contactIds.forEach(id => {
+        const contactIndex = contacts.findIndex(c => c.id === Number(id));
+
+        if (contactIndex !== -1) {
+            contacts.splice(contactIndex, 1);
+            ++deletedCount;
+        }
     });
+
+    if (deletedCount === 0) {
+        res.send({success: false, message: "Контакты не найдены"});
+        return;
+    }
+
+    res.send({success: true, message: null});
 });
 
 router.delete("/api/contact/:id", function (req, res) {
@@ -97,19 +103,13 @@ router.delete("/api/contact/:id", function (req, res) {
     const contactIndex = contacts.findIndex(c => c.id === id);
 
     if (contactIndex === -1) {
-        res.send({
-            success: false,
-            message: "Контакт не найден"
-        });
+        res.send({success: false, message: "Контакт не найден"});
         return;
     }
 
     contacts.splice(contactIndex, 1);
 
-    res.send({
-        success: true,
-        message: null
-    });
+    res.send({success: true, message: null});
 });
 
 function validateContact(surname, name, phone) {
@@ -136,10 +136,7 @@ function getContactData(req, res) {
     const validationMessage = validateContact(surname, name, phone);
 
     if (validationMessage) {
-        res.send({
-            success: false,
-            message: validationMessage
-        });
+        res.send({success: false, message: validationMessage});
         return null;
     }
 
