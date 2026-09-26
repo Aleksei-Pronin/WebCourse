@@ -11,3 +11,7 @@ body {
 .todo-list li:hover {
     background: #e9ecef;
 }
+
+[v-cloak] {
+    display: none;
+}
