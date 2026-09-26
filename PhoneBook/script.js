@@ -66,7 +66,7 @@ $(function () {
             .filter(":visible")
             .length > 0;
 
-        deleteSelectedButton.toggle(hasSelected);
+        deleteSelectedButton.prop("disabled", !hasSelected);
     }
 
     function deleteRows(rows) {
@@ -77,6 +77,7 @@ $(function () {
     }
 
     function isPhoneAlreadyExists(phone, currentRow) {
+        const normalizedPhone = phone.trim().toLowerCase();
         let exists = false;
 
         contactsBody.find("tr").not(".empty").each(function () {
@@ -86,7 +87,9 @@ $(function () {
                 return;
             }
 
-            if (row.find(".phone").text().trim() === phone) {
+            const rowPhone = row.find(".phone").text().trim().toLowerCase();
+
+            if (rowPhone === normalizedPhone) {
                 exists = true;
             }
         });
@@ -168,7 +171,7 @@ $(function () {
         updateNumbers();
     });
 
-    selectAll.on("change", () => {
+    selectAll.on("change", function () {
         contactsBody.find(".select-contact")
             .closest("tr")
             .filter(":visible")
@@ -269,17 +272,23 @@ $(function () {
 
         contactsBody.find("tr").not(".empty").each(function () {
             const row = $(this);
-            const rowText = row.find(".surname, .name, .phone").map((index, element) =>
-                $(element).text()
-            ).get().join(" ").toLowerCase();
-            row.toggle(rowText.includes(searchText));
+
+            const surname = row.find(".surname").text().toLowerCase();
+            const name = row.find(".name").text().toLowerCase();
+            const phone = row.find(".phone").text().toLowerCase();
+
+            const matches = surname.includes(searchText)
+                || name.includes(searchText)
+                || phone.includes(searchText);
+
+            row.toggle(matches);
         });
 
         updateNumbers();
         updateDeleteSelectedButton();
     });
 
-    clearFilterButton.on("click", () => {
+    clearFilterButton.on("click", function () {
         filter.val("");
         contactsBody.find("tr").not(".empty").show();
         updateNumbers();
@@ -288,4 +297,5 @@ $(function () {
 
     updateNumbers();
     updateDeleteSelectedButton();
+    $(".container").css("visibility", "visible");
 });
